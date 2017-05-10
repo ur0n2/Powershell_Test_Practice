@@ -222,9 +222,8 @@ start iexplore google.com
 DRIVER_VERSION_CHK
 echo "* Complete"
 
-#todo: error handling?´ì„œ ?Œì¼?? œ?????„ë¦°?¸x 
-#ini ê²½ë¡œ ì²˜ë¦¬ ê¸°í? ê°ˆë¬´ë¦?
-
+#todo: error handling?æŒ«åŠ€ ?å²‡æ¾•??ç‰…?????å‹²Î ?ç«« 
+#ini ç“´è¯«î”¡ è§³æ©‚Îœ æ—®ç»Š? è‡§å §îƒæ¯½?
 <#
 
 System.Management.Automation.ActionPreferenceStopException
@@ -234,19 +233,19 @@ get-help about_commonparameters
 
 get-help about_aoutomatic_variables
 
-¿©±â¼­ remove-item°ú °°Àº ½Ã½ºÅÛ ¸®¼Ò½º »èÁ¦¸¦ ÇÒ°æ¿ì¿¡ -confirmÀÇ ±âº» ¿É¼ÇÀ» ÁÙ ¼ö ÀÖ´Âµ¥ ±×¶§ ¿¡·¯½Ã »ı¼ºµÇ´Â ¿¡·¯ÀÇ ÀÚµ¿º¯¼ö¸¦ È®ÀÎÇÒ ¼ö ÀÖÀ½ ÀÌ¶§ permission denied´Â UnautohorizedAccessExceptionÀ¸·Î ¿¹¿Ü°¡ ¹ß»ıÇÏ´Âµ¥ try...catch¿¡¼­ catch°¡ actionpreferencestopexceptionÀ¸·Î ÇÚµé¸µ ÇØ¾ß ÇÔ. ÄÜ¼ÖÀÌ ¸ØÃç¹ö¸° °æ¿ì¶ó ¼­...? -> operationstopped»óÅÂÀÇ Ä«Å×°í¸®¶ó¼­ 
+ì—¬ê¸°ì„œ remove-itemê³¼ ê°™ì€ ì‹œìŠ¤í…œ ë¦¬ì†ŒìŠ¤ ì‚­ì œë¥¼ í• ê²½ìš°ì— -confirmì˜ ê¸°ë³¸ ì˜µì…˜ì„ ì¤„ ìˆ˜ ìˆëŠ”ë° ê·¸ë•Œ ì—ëŸ¬ì‹œ ìƒì„±ë˜ëŠ” ì—ëŸ¬ì˜ ìë™ë³€ìˆ˜ë¥¼ í™•ì¸í•  ìˆ˜ ìˆìŒ ì´ë•Œ permission deniedëŠ” UnautohorizedAccessExceptionìœ¼ë¡œ ì˜ˆì™¸ê°€ ë°œìƒí•˜ëŠ”ë° try...catchì—ì„œ catchê°€ actionpreferencestopexceptionìœ¼ë¡œ í•¸ë“¤ë§ í•´ì•¼ í•¨. ì½˜ì†”ì´ ë©ˆì¶°ë²„ë¦° ê²½ìš°ë¼ ì„œ...? -> operationstoppedìƒíƒœì˜ ì¹´í…Œê³ ë¦¬ë¼ì„œ 
 
-ÇÏÁö¸¸ ±âº» ¿¡·¯³»¿ë¿¡¼­´Â actionpreferencestopexceptionÀ» È®ÀÎÇÒ ¼ö ¾øÀ¸¹Ç·Î °øÅëÆÄ¶ó¹ÌÅÍ³ª ÀÚµ¿º¯¼ö¿¡¼­ Ã£¾ÆºÁ¾ß°ÚÀ½
+í•˜ì§€ë§Œ ê¸°ë³¸ ì—ëŸ¬ë‚´ìš©ì—ì„œëŠ” actionpreferencestopexceptionì„ í™•ì¸í•  ìˆ˜ ì—†ìœ¼ë¯€ë¡œ ê³µí†µíŒŒë¼ë¯¸í„°ë‚˜ ìë™ë³€ìˆ˜ì—ì„œ ì°¾ì•„ë´ì•¼ê² ìŒ
 
 remove-item "C:\Program Files\AhnLab\APC2\MyPC Admin 4.0\AhnI2.dll"
 
-Ä«Å×°í¸®°¡ stopÀÌ¶ó¼­ ¤±ctionpreferencestopexceptionÀÌ¶ó´Â enumÇü action list°¡ ÀÖ³ªº½ msdn
+ì¹´í…Œê³ ë¦¬ê°€ stopì´ë¼ì„œ actionpreferencestopexceptionì´ë¼ëŠ” enumí˜• action listê°€ ìˆë‚˜ë´„ msdn
 
-º¸ÅëÀÇ try..catch´Â system.io.ioexception ÀÌ³ª system.net.webexception, 
+ë³´í†µì˜ try..catchëŠ” system.io.ioexception ì´ë‚˜ system.net.webexception, 
 
-¿À·ùÀ¯Çü(category)¸¦ ºÁ¾ßÇÔ 
+ì˜¤ë¥˜ìœ í˜•(category)ë¥¼ ë´ì•¼í•¨ 
 
-Windows PowerShell SDKÀÇ 
-        "ErrorCategoryInfo class(ErrorCategoryInfo Å¬·¡½º)"¸¦
+Windows PowerShell SDKì˜ 
+        "ErrorCategoryInfo class(ErrorCategoryInfo í´ë˜ìŠ¤)"ë¥¼
 
 #>
