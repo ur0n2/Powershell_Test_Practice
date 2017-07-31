@@ -5,33 +5,6 @@
 #   First, You must command to 'Set-ExecutionPolicy ByPass -Force'  #
 #####################################################################
 
-function OS_VER_CHK {
-    if ([System.IntPtr]::Size -eq 4) { "32" } else { "64" }
-}
-
-
-function DRIVER_VERSION_CHK {
-    write-output "[+] DRIVER_VERSION_CHK"
-
-    $os_ver = OS_VER_CHK
-
-    if ($os_ver -eq 32) {
-        $prg_path = (get-childitem env:"PROGRAMFILES").Value
-    }
-    else {
-        $prg_path = (get-childitem env:"PROGRAMFILES(X86)").Value
-    }
-
-    $mypc_path = write-output $prg_path"\AhnLab\APC2\"
-    $common_path = "C:\Program Files\Common Files\AhnLab\APCShield" 
-    $drivers = "AhnI2.dll", "AhnI2X64.dll", "PrvcBiz.dll", "PrvcBizx64.dll"  #"AhnRghNt.sys", "Amoncdw7.sys", "amoncdw8.sys", "AmonHKnt.sys", "Atamptnt.sys", "APrMDrv.sys", "ApRMctl.dll", "MPCIDRV.sys"
-
-    foreach($driver in $drivers) {
-        (Get-ChildItem $mypc_path -Include $driver -Recurse) | foreach-object { " {0}`t {1}" -f $_.Name, [System.Diagnostics.FileVersionInfo]::GetVersionInfo($_).FileVersion }     
-        (Get-ChildItem $common_path -Include $driver -Recurse) | foreach-object { " {0}`t {1}" -f $_.Name, [System.Diagnostics.FileVersionInfo]::GetVersionInfo($_).FileVersion }     
-    }
-}
-
 
 function PROCESS_RUNNING_CHK {
     write-output "[+] PROCESS_RUNNING_CHK"
@@ -45,7 +18,7 @@ function PROCESS_RUNNING_CHK {
     $FoundedList = @("")
 
     do {
-	    $ProcessesFound = Get-Process $ProcessList -ErrorAction SilentlyContinue        
+	    $ProcessesFound = Get-Process $ProcessList -ErrorAction SilentlyContinue
 	    if ($ProcessesFound) {		        
             $FoundedList += foreach($i in $ProcessesFound) { $i.name }
             $FoundedList = ($FoundedList | sort -unique)
@@ -56,14 +29,37 @@ function PROCESS_RUNNING_CHK {
 }
 
 
+function MAIN {
+    Import-Module -Name ".\STOP_PROCESS.psm1" -Force
+    Import-Module -Name ".\DELETE_FILE.psm1" -Force
+    Import-Module -Name ".\DELETE_REGISTRY.psm1" -Force
+
+    write-output "[+] Start verify testing for Ahi2*.dll(in perf-test) !"
+    
+    $os_ver = OS_VER_CHK
+
+    if ($os_ver -eq 32) {
+        $prg_path = (get-childitem env:"PROGRAMFILES").Value
+    }
+    else {
+        $prg_path = (get-childitem env:"PROGRAMFILES(X86)").Value
+    }
+
+    $mypc_path = write-output $prg_path"\AhnLab\APC2\"
+    $common_path = "C:\Program Files\Common Files\AhnLab\APCShield" 
+    $drivers = "AhnI2.dll", "AhnI2X64.dll", "PrvcBiz.dll", "PrvcBizx64.dll" 
+    #"AhnRghNt.sys", "Amoncdw7.sys", "amoncdw8.sys", "AmonHKnt.sys", "Atamptnt.sys", "APrMDrv.sys", "ApRMctl.dll", "MPCIDRV.sys"
+
+
+    DRIVER_VERSION_CHK
+    PROCESS_RUNNING_CHK
+
+    write-output "[+] Verify Testing for Ahi2*.dll(in perf-test) Complete !"
+}
+
 
 #####################################################################
 ############################# MAIN ##################################
 #####################################################################
 
-write-output "[+] Start verify testing for Ahi2*.dll(in perf-test) !"
-
-DRIVER_VERSION_CHK
-PROCESS_RUNNING_CHK
-
-write-output "[+] Verify Testing for Ahi2*.dll(in perf-test) Complete !"
+MAIN

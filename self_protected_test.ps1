@@ -16,50 +16,35 @@
 #   COMMON_DIR: C:\Program Files\Common Files\AhnLab\APCShield                                                                       #
 ######################################################################################################################################
 
-function OS_VER_CHK {
-    if ([System.IntPtr]::Size -eq 4) { "32" } else { "64" }
-}
 
+function DELETE_REGISTRYS {  
+    write-output "[+] DELETE_REGISTRYS"
 
-function DRIVER_VERSION_CHK {
-    write-output "[+] DRIVER_VERSION_CHK"    
-
-    foreach($driver in $drivers) {
-        (Get-ChildItem $mypc_path -Include $driver -Recurse -ErrorAction SilentlyContinue) | foreach-object { " {0}`t {1}" -f $_.Name, [System.Diagnostics.FileVersionInfo]::GetVersionInfo($_).FileVersion }     
-        (Get-ChildItem $common_path -Include $driver -Recurse -ErrorAction SilentlyContinue) | foreach-object { " {0}`t {1}" -f $_.Name, [System.Diagnostics.FileVersionInfo]::GetVersionInfo($_).FileVersion }     
-    }
-}
-
-
-function DELETE_REGISTRY {  
-    write-output "[+] DELETE_REGISTRY"
-
-    Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\AhnFlt2k" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\AhnRec2k" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\AhnRghNt" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\CdmDrvNt" -Name * -ErrorAction SilentlyContinue 
+    DELETE_REGISTRY("HKLM:\SYSTEM\CurrentControlSet\Services\AhnFlt2k")
+    DELETE_REGISTRY("HKLM:\SYSTEM\CurrentControlSet\Services\AhnRec2k")
+    DELETE_REGISTRY("HKLM:\SYSTEM\CurrentControlSet\Services\AhnRghNt")
+    DELETE_REGISTRY("HKLM:\SYSTEM\CurrentControlSet\Services\CdmDrvNt")
     
-    Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\ATamptNt_APCShield" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\APCShield" -Name * -ErrorAction SilentlyContinue
+    DELETE_REGISTRY("HKLM:\SYSTEM\CurrentControlSet\Services\ATamptNt_APCShield")
+    DELETE_REGISTRY("HKLM:\SYSTEM\CurrentControlSet\Services\APCShield")
 
-    Remove-ItemProperty -Path "HKLM:\Software\AhnLab\APC2\Policy Admin 4.0" -Name * -ErrorAction SilentlyContinue 
+    DELETE_REGISTRY("HKLM:\Software\AhnLab\APC2\Policy Admin 4.0")
 
-    Remove-ItemProperty -Path "HKLM:\Software\AhnLab\APC2\Policy Agent" -Name * -ErrorAction SilentlyContinue 
+    DELETE_REGISTRY("HKLM:\Software\AhnLab\APC2\Policy Agent")
 
 
-    Remove-ItemProperty -Path "HKLM:\Software\AhnLab\APC2\ProactiveDefense" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\Software\AhnLab\DynaUpdate" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Ahnlab\APC2\Policy Agent" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Ahnlab\APC2\ProactiveDefense" -Name * -ErrorAction SilentlyContinue 
-    Remove-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Ahnlab\DynaUpdate" -Name * -ErrorAction SilentlyContinue 
+    DELETE_REGISTRY("HKLM:\Software\AhnLab\APC2\ProactiveDefense")
+    DELETE_REGISTRY("HKLM:\Software\AhnLab\DynaUpdate")
+    DELETE_REGISTRY("HKLM:\SOFTWARE\WOW6432Node\Ahnlab\APC2\Policy Agent")
+    DELETE_REGISTRY("HKLM:\SOFTWARE\WOW6432Node\Ahnlab\APC2\ProactiveDefense")
+    DELETE_REGISTRY("HKLM:\SOFTWARE\WOW6432Node\Ahnlab\DynaUpdate")
 
-    Remove-ItemProperty -Path "HKLM:\SOFTWARE\Ahnlab\APC2\MyPC Agent" -Name * -ErrorAction SilentlyContinue
-   
+    DELETE_REGISTRY("HKLM:\SOFTWARE\Ahnlab\APC2\MyPC Agent")
 }
 
 
-function DELETE_FILE {
-    write-output "[+] DELETE_FILE"
+function DELETE_FILES {
+    write-output "[+] DELETE_FILES"
 
     $sys_env_path = (get-childitem env:"SYSTEMROOT").Value    
     $sys_path = write-output $sys_env_path"\System32\Drivers\"
@@ -72,18 +57,18 @@ function DELETE_FILE {
     $ErrorView = "CategoryView" 
     
     foreach ($dir_name in $dir_names) {
-        Remove-Item -Force -recurse $mypc_path$dir_name -ErrorAction SilentlyContinue
+        DELETE_FILE($mypc_path$dir_name)
     }
     
     $driver = ''
     foreach($driver in $drivers) {      
-        Remove-Item -Force -recurse $sys_path$drvier -ErrorAction SilentlyContinue
+        DELETE_FILE($sys_path$drvier)
     }
 }
 
 
-function KILL_PROCESS {
-    write-output "[+] KILL_PROCESS"
+function KILL_PROCESSES {
+    write-output "[+] KILL_PROCESSES"
     #EMS_PROCESS
     $ems_process = "pasvc", "papd", "amagent", "patray", "AmMsgVW", "AmBlltn"
 
@@ -96,7 +81,7 @@ function KILL_PROCESS {
     $total_process = $ems_process, $mypc_process, $admin_process
 
     foreach($process in $total_process) {
-        stop-process -name $process -ErrorAction SilentlyContinue -force 
+        STOP_PROCESS($process)
     }
 }
 
@@ -129,12 +114,12 @@ function NETWORK_DISCONNECTION_CHK {
 
 
 function PROCESS_TERMINATE {
-    $msgBoxInput =  [System.Windows.MessageBox]::Show("Notepad and iexplore terminate?", "Notepad and iexplore terminate", "YesNo", "Question")
+    $msgBoxInput =  [System.Windows.MessageBox]::Show("Notepad and iexplore terminate?", "¸»ÇØ Yes or No", "YesNo", "Question")
 
     switch  ($msgBoxInput) {
         "Yes" {
-            Stop-Process -Name notepad -ErrorAction SilentlyContinue -force 
-            Stop-Process -Name iexplore -ErrorAction SilentlyContinue -force 
+            STOP_PROCESS(notepad)
+            STOP_PROCESS(iexplore)
         }
         "No" {
             # No operation
@@ -148,31 +133,40 @@ function ERROR_PRINT {
 }
 
 
+function MAIN {
+    write-output "[+] Self-Protected Veification Test Script Start !"
+
+    Import-Module -Name ".\STOP_PROCESS.psm1" -Force
+    Import-Module -Name ".\DELETE_FILE.psm1" -Force
+    Import-Module -Name ".\DELETE_REGISTRY.psm1" -Force
+
+    if (OS_VER_CHK -eq 32) {
+        $prg_path = (get-childitem env:"PROGRAMFILES").Value
+    }
+    else {
+        $prg_path = (get-childitem env:"PROGRAMFILES(X86)").Value
+    }
+
+    $mypc_path = write-output $prg_path"\AhnLab\APC2\"
+    $common_path = "C:\Program Files\Common Files\AhnLab\APCShield" 
+    $drivers = "AhnRghNt.sys", "Amoncdw7.sys", "amoncdw8.sys", "AmonHKnt.sys", "Atamptnt.sys", "APrMDrv.sys", "ApRMctl.dll", "MPCIDRV.sys"
+
+    ATAMPTNT_UNLOAD
+    DELETE_REGISTRYS
+    DELETE_FILES
+    KILL_PROCESSES
+    INI_ENCRYPT_CHK
+    FOR_MYPC_INSPECT_VULN_STATUS
+    DRIVER_VERSION_CHK
+    NETWORK_DISCONNECTION_CHK
+    PROCESS_TERMINATE
+
+    write-output "[+] Self-Protected Veification Test Complete !"
+}
+
+
 #####################################################################
 ############################# MAIN ##################################
 #####################################################################
 
-write-output "[+] Self-Protected Veification Test Script Start !"
-
-if (OS_VER_CHK -eq 32) {
-    $prg_path = (get-childitem env:"PROGRAMFILES").Value
-}
-else {
-    $prg_path = (get-childitem env:"PROGRAMFILES(X86)").Value
-}
-
-$mypc_path = write-output $prg_path"\AhnLab\APC2\"
-$common_path = "C:\Program Files\Common Files\AhnLab\APCShield" 
-$drivers = "AhnRghNt.sys", "Amoncdw7.sys", "amoncdw8.sys", "AmonHKnt.sys", "Atamptnt.sys", "APrMDrv.sys", "ApRMctl.dll", "MPCIDRV.sys"
-
-ATAMPTNT_UNLOAD
-DELETE_REGISTRY
-DELETE_FILE
-KILL_PROCESS
-INI_ENCRYPT_CHK
-FOR_MYPC_INSPECT_VULN_STATUS
-DRIVER_VERSION_CHK
-NETWORK_DISCONNECTION_CHK
-PROCESS_TERMINATE
-
-write-output "[+] Self-Protected Veification Test Complete !"
+MAIN
