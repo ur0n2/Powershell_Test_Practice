@@ -1,4 +1,4 @@
-﻿Remove-Module -Name KERNEL_OBJECT_ELIMINATION -Force
+﻿Remove-Module -Name KERNEL_OBJECT_ELIMINATION -Force -ErrorAction SilentlyContinue
 Import-Module -Name ".\KERNEL_OBJECT_ELIMINATION.psm1" -Force
 
 
