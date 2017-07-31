@@ -1,5 +1,7 @@
-﻿Remove-Module -Name function_test -Force
-Remove-Module -Name Get-PE -Force
+﻿Remove-Module -Name function_test -Force -ea SilentlyContinue
+Remove-Module -Name Get-PE -Force -ea SilentlyContinue
+
+
 Import-Module -Name .\function_test.psm1 -Force
 Import-Module -Name .\Get-PE.psm1 -Force
 echo123("Powershell module test - ur0n2")

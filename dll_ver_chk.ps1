@@ -50,8 +50,8 @@ function MAIN {
     $drivers = "AhnI2.dll", "AhnI2X64.dll", "PrvcBiz.dll", "PrvcBizx64.dll" 
     #"AhnRghNt.sys", "Amoncdw7.sys", "amoncdw8.sys", "AmonHKnt.sys", "Atamptnt.sys", "APrMDrv.sys", "ApRMctl.dll", "MPCIDRV.sys"
 
-
-    DRIVER_VERSION_CHK
+    
+    #DRIVER_VERSION_CHK
     PROCESS_RUNNING_CHK
 
     write-output "[+] Verify Testing for Ahi2*.dll(in perf-test) Complete !"
