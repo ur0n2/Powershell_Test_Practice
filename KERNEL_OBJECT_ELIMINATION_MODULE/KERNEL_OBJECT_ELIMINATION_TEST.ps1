@@ -1,6 +1,5 @@
-﻿Import-Module -Name ".\STOP_PROCESS.psm1" -Force
-Import-Module -Name ".\DELETE_FILE.psm1" -Force
-Import-Module -Name ".\DELETE_REGISTRY.psm1" -Force
+﻿Remove-Module -Name KERNEL_OBJECT_ELIMINATION -Force
+Import-Module -Name ".\KERNEL_OBJECT_ELIMINATION.psm1" -Force
 
 
 Start-Process "calc"
